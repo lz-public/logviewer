@@ -11,25 +11,29 @@ A minimalistic distributed log viewer demo.
 
 ## Description
 
-This work is a PoC of a distributed log file viewer that reads logs located in /var/logs (by default). It exposes a REST API (e.g. for use with Postman) and includes a simple web interface if you open the root address on your browser. By default it allows returning up to 50 results per host, but you can change that in the constants. It can be used for the local machine only if you don't specify other hosts. If you enter one or more hostname:port values, the same search is performed on all these hosts (it's assumed that you install this tool and run it on these hosts). If you want to test the distributed feature locally, you can enter many 127.0.0.1:< port > and run the server in different ports (you'll get the same results for all searches in each host).
+This work is a PoC of a distributed log file viewer that reads logs located in /var/logs (by default). It exposes a REST API (e.g., for use with Postman) and includes a simple web interface if you open the base address on your browser.
+
+By default, it allows returning up to 50 results per host, but you can change that in the constants. It can be used for the local machine only if you don't specify other hosts. If you enter one or more hostname:port values, the same search is performed on all these hosts (assumed that you install this tool and run it on these hosts).
+
+If you want to test the distributed feature locally, you can enter many 127.0.0.1:< port > and run the server in different ports (you'll get the same results for all searches in each host).
 
 ![The Experimental Distributed Log Viewer Demo](public/logviewer-screenshot.png)
 
-The intended use for this code is only experimetal, to learn and to use it as base for other projects. Don't use it in production.
+The intended use for this code is only experimental, to learn, and to use it as a base for other projects. Please don't use it in production.
 
 Features:
 
-- Reads any type of text file. It's format-agnostic.
-- Can run in several ports. If no port is specified, a random+free port is assigned and displayed in the console at startup.
+- It can read any text file. It's format-agnostic.
+- It can run in several ports. If no port is specified, a random+free port is assigned and displayed in the console at startup.
 - There is no master/slave, and you can start servers in any order.
 - Uses a mini dynamic task scheduler based on parallel promises to do proxy-style or lightweight operations.
-- Uses worker threads for heavy CPU/Disk processing and keep the main thread unblocked.
-- It's supposed to work with very big files. The log files are read in parts to use the smallest possible amount of memory.
+- Uses worker threads for heavy CPU/Disk processing and keeps the main thread unblocked.
+- It's supposed to work with huge files. The log files are read in parts to use the smallest possible amount of memory.
 
 Notes (space for improvement):
 
-- Searches are done as entire phrase (not OR/AND keyords).
-- No authentication layer is provided.
+- Search strings considered as an entire phrase (not OR/AND keywords).
+- No authentication layer provided.
 - No validation on input values.
 
 ## Installation
