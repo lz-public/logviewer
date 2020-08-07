@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Log Viewer Demo</title>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.0/themes/smoothness/jquery-ui.css">
+  <meta name="theme-color" content="#ffffff">
+  <style type="text/css">
+  td {
+    font-family: "Courier New", monospace;
+    word-break: break-all;
+    min-width: 150px;
+  }
+  </style>
+</head>
+<body>
+    <div class="container">
+        <h3>Log viewer</h3>
+        <br>
+        <div class="form-group">
+            <label for="filename" class="col-sm-4 col-form-label">Log filename:</label>
+            <div class="col-sm-8">
+                <input id="filename" placeholder="access.log" class="form-control">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="maxresults" class="col-sm-4 col-form-label">Results:</label>
+            <div class="col-sm-8">
+                <input id="maxresults" placeholder="1 - 50" value="5" class="form-control" size="2">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="search" class="col-sm-4 col-form-label">Search:</label>
+            <div class="col-sm-8">
+                <input id="search" placeholder="something" class="form-control"><br>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="hosts" class="col-sm-4 col-form-label">Hosts:</label>
+            <div class="col-sm-8">
+                <textarea id="hosts" placeholder="127.0.0.1:8000,127.0.0.1:8001,..." class="form-control"></textarea>
+            </div>
+        </div>
+        <div style="float: right; margin: 20px;"><button id="fetch" class="btn btn-primary">View logs</button></div>
+    </div>
+    <div id="results" style="margin-left:auto; margin-right:auto; width: 90%;">
+        <table id="rtbl" class="table"><tbody></tbody></table>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+<script>
+$("#fetch").click(function() {
+    localStorage.setItem('filename', $("#filename").val());
+    localStorage.setItem('maxresults', $("#maxresults").val());
+    localStorage.setItem('search', $("#search").val());
+    localStorage.setItem('hosts', $("#hosts").val());
+    $(this).text('Please wait...');
+    $("#rtbl tbody").empty();
+    var req = $.ajax({
+      method: "GET",
+      url: "/file/" + $("#filename").val() + "/last/" + $("#maxresults").val() + "?q=" + $("#search").val() + "&h=" + $("#hosts").val().replace(/ /g, ',').replace(/\n/g, ','),
+    }).done(function(results) {
+      if (results.hosts && Array.isArray(results.hosts)) {
+        results.hosts.forEach(host => {
+          let hostname = host.host;
+          if (host.results && Array.isArray(host.results) && host.results.length > 0) {
+            host.results.forEach(logline => {
+                var line = '<tr><td>' + hostname + '</td><td>' + logline + '</td></tr>';
+                $("#rtbl tbody").append(line);
+            });
+          } else {
+            var line = '<tr><td>' + hostname + '</td><td>No results</td></tr>';
+            $("#rtbl tbody").append(line);
+          }
+        });
+      }
+    }).fail(function(res) {
+        alert(res);
+    }).always(function() {
+        $("#fetch").text('View logs');
+    });
+});
+
+// Load previously used examples
+$("#filename").val(localStorage.getItem('filename'));
+$("#maxresults").val(localStorage.getItem('maxresults'));
+$("#search").val(localStorage.getItem('search'));
+$("#hosts").val(localStorage.getItem('hosts'));
+
+</script>
+</html>

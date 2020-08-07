@@ -1,0 +1,33 @@
+{
+  "name": "logviewer",
+  "version": "1.0.0",
+  "description": "A distributed log viewer demo in Node.js",
+  "main": "server.js",
+  "scripts": {
+    "test": "mocha --experimental-worker",
+    "start": "node --experimental-worker server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lz-public/logviewer.git"
+  },
+  "keywords": [
+    "log",
+    "view",
+    "distributed"
+  ],
+  "author": "Luciano Zappa",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/lz-public/logviewer/issues"
+  },
+  "homepage": "https://github.com/lz-public/logviewer#readme",
+  "dependencies": {
+    "node-fetch": "^2.6.0",
+    "restify": "^8.5.1"
+  },
+  "devDependencies": {
+    "mocha": "^8.1.1",
+    "mock-fs": "^4.12.0"
+  }
+}
