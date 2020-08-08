@@ -86,8 +86,10 @@ function getChunk (fileDescriptor, start, length) {
  * searchStr: the keyword to search (string)
  */
 function lineSearch (text, searchStr) {
-  // this version detects only the first occurence of the strng. Future improvement: detect all occurences to allow highlighting
-  // using a while() and return the array with all starting positions of the search string
+  // this version detects only the first occurence of the strng. Possible improvements:
+  // 1) detect all occurences to allow highlighting by and array with all starting
+  //    positions of the search string.
+  // 2) search by keyword
   let pos = text.indexOf(searchStr);
   if (pos > -1) {
     return [pos];

@@ -1,0 +1,17 @@
+Tue Aug  4 19:48:53.954 SC: <airportd[276]> airportdProcessSystemConfigurationEvent: Processing 'State:/Network/Interface/en0/AirPort/CachedScanRecord'
+Tue Aug  4 19:48:53.954 SC: <airportd[276]> airportdProcessSystemConfigurationEvent: Processing 'State:/Network/Interface/en0/AirPort/BluetoothAudioInUse'
+Tue Aug  4 19:48:53.954 SC: <airportd[276]> airportdProcessSystemConfigurationEvent: Processing 'State:/Network/Interface/en0/AirPort/ProfileID'
+Tue Aug  4 19:48:53.960 Info: <WiFiAgent[608]> current=(no_assoc, aj) changed=(aj)
+Tue Aug  4 19:48:53.962 AutoJoin: <airportd[276]> Will try to auto-join non-captive networks only
+Tue Aug  4 19:48:53.985 AutoJoin: <airportd[276]> MULTI-SSID AUTO-JOIN on interface en0, optimized channel list {(
+Tue Aug  4 19:48:53.985     Channel: 1
+Tue Aug  4 19:48:53.985 Weight: 4.7354
+Tue Aug  4 19:48:53.985 ,
+Tue Aug  4 19:48:53.985     Channel: 11
+Tue Aug  4 19:48:53.985 Weight: 4.2582
+Tue Aug  4 19:48:53.985 ,
+Tue Aug  4 19:48:53.985     Channel: 2
+Tue Aug  4 19:48:53.985 Weight: 3.1336
+Tue Aug  4 19:48:53.985 ,
+Tue Aug  4 19:48:53.985     Channel: 6
+Tue Aug  4 19:48:53.985 Weight: 2.7311

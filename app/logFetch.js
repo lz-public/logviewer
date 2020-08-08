@@ -1,7 +1,6 @@
 var fs = require('fs');
 var fetch = require('node-fetch');
 const { Worker, isMainThread, parentPort } = require('worker_threads');
-const { file } = require('mock-fs/lib/filesystem');
 
 var DEFAULT_LOG_DIR = '/var/log/';
 const DEFAULT_LOCALHOST_LABEL = 'local';
@@ -158,14 +157,12 @@ function go (req, res, next) {
     });
 
     // send the response to the client
-
     res.send({
       filename,
       numberOfLines,
       searchString,
       hosts: scanResult
     });
-
     next();
   });
 }
