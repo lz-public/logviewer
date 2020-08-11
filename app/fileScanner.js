@@ -24,7 +24,7 @@ parentPort.on('message', (options) => {
   let searchString = options.searchString.trim();
   let partToAddToNextChunk = '';
 
-  while ((startPosition >= 0 && endPosition > 0) && collectedLines.length < numberOfLines) {
+  while ((startPosition >= 0 || endPosition > 0) && collectedLines.length < numberOfLines) {
     let someData = getChunk(options.fileDescriptor, startPosition, blockSize);
 
     // if there was some data from the next chunk (we're reading backwards), add it to the current chunk
@@ -41,18 +41,17 @@ parentPort.on('message', (options) => {
       lines.shift();
     }
 
-    // first keep only relevant results, then reverse (smaller array)
+    // first keep only relevant results
     lines = lines.filter(line => lineSearch(line, searchString).length > 0);
-    lines.reverse();
+
+    // add results to our collection in reverse order
+    for (let l = lines.length - 1; l >= 0; l--) {
+      if (collectedLines.length < numberOfLines && lines[l].trim() !== '') collectedLines.push(lines[l]);
+    }
 
     // move pointers back
     startPosition -= blockSize;
     endPosition = startPosition + blockSize;
-
-    // add results to our collection
-    lines.forEach(function (l) {
-      if (collectedLines.length < numberOfLines && l.trim() !== '') collectedLines.push(l);
-    });
   }
 
   // send the results to the parent process
@@ -69,7 +68,12 @@ parentPort.on('message', (options) => {
  * length: the buffer size (int)
  */
 function getChunk (fileDescriptor, start, length) {
-  if (start < 0) start = 0;
+  // on the first chunk of the file don't read before the beginning of the file
+  // and read only data that hasn't been already read on the previous run
+  if (start < 0) {
+    length = start + length;
+    start = 0;
+  }
   if (length <= 0) return '';
 
   let buffer = Buffer.alloc(length, 0);
